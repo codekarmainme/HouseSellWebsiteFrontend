@@ -1,0 +1,19 @@
+.Chat-feed {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  overflow-y: auto; 
+}
+.msg {
+  font-size: 10px;
+  font-weight: normal;
+  width: 50%;
+}
+@media only screen and (max-width: 600px) {
+.Chat-feed{
+  display: none !important;
+}
+
+}

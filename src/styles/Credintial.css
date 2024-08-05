@@ -1,0 +1,193 @@
+.credintial{
+width: 100%;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: white;
+
+}
+.cred_container{
+    
+    width: 60%;
+    height: 80%;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px #154360 solid;
+    border-radius: 10px;
+}
+.cred_container_signup{
+    
+    width: 60%;
+    height: 80%;
+    position: absolute;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    border: 2px #154360 solid;
+    border-radius: 10px;
+    transition: 2s;
+}
+.cred_txt span{
+    font-size: x-large;
+    font-weight: 900;
+}
+.cred_txt_signup span{
+    font-size: x-large;
+    font-weight: 900;
+}
+.cred_input{
+    margin-right: 0px;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #154360;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+   
+}   
+.cred_input_signup{
+    margin-right: 0px;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #154360;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+.logo{
+    width: 50%;
+    height: 50%;
+}
+.cred_txt{
+   margin-left: 10%;
+   display: flex;
+   flex-direction: column;
+   
+   align-items: center;
+   gap: 20px;
+   
+}
+.cred_txt_signup{
+    margin-right: 10%;
+   display: flex;
+   flex-direction: column;
+   
+   align-items: center;
+   gap: 20px;
+}
+input{
+    width: 80%;
+    height: 30px;
+    border: 1px  #ccc solid;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 900;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+}
+.inp::placeholder{
+    color: #999;
+    transition:all 0.3s ease; 
+}
+.inp:focus{
+    border-color:2px  rgb(255, 115, 0) solid ;
+    
+}
+.inp::placeholder:focus{
+    color: #007bff;
+   
+}
+button{
+    width: 40%;
+    height: 40px;
+    background-color: rgb(255, 115, 0) ;
+    border-radius: 5px;
+    border: #154360 solid 2px;
+    cursor: pointer;
+}
+.signup{
+    color:rgb(255, 115, 0);
+    cursor: pointer;
+    
+}
+.icon_cont{
+    display: flex;
+    gap: 40px;
+}
+img{
+    width: 40px;
+    height: 40px;
+}
+.txt1{
+color: rgb(255, 230, 0)
+}
+.txt2{
+    color: #154360;
+    }
+ .txt3{
+        color: #154360;
+        }
+.cred_msg{
+    position: absolute;
+    background-color: rgb(159, 238, 159);
+    color: #999;
+    padding: 10px;
+    width: 47.2%;
+   border-top-right-radius: 10px;
+    font-size: 14px;
+    top: 0px;
+    right: 0px;
+    
+}
+@media only screen and (max-width: 670px) {
+    .cred_txt{
+        display: none;
+    }
+    .cred_input{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+    .cred_input_signup{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+    .cred_txt_signup{
+        display: none;
+    }
+    .cred_container{
+       
+        width: 100%;
+        height: 100%;
+    }
+    .cred_container_signup{
+        width: 100%;
+        height: 100%;
+    }
+}
+@media only screen and (max-width: 1050px) {
+    .cred_container{
+       
+        width: 90%;
+        height: 90%;
+    }
+    .cred_container_signup{
+        width: 90%;
+        height: 90%;
+    }
+}

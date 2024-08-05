@@ -1,0 +1,36 @@
+.profile{
+    margin-top:15vh;
+    color: rgb(0, 0, 0);
+}
+.bg-img{
+  width: 100%;
+  height: 25vh;
+}
+.pfl-pic{
+    border: 2px solid rgb(8, 144, 229);
+    border-radius: 50%;
+    height: 20vh;
+    width: 20vh;
+   
+}
+.pfl{
+    position: absolute;
+    margin-top: 20vh;
+    margin-left: 5px;
+    display: flex;
+    gap: 3vh;
+   
+}
+.pfl-txt{
+    margin-top: 15px;
+    z-index: 0;
+}
+hr{
+    margin-top: 15vh;
+}
+.pfl-posts{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
