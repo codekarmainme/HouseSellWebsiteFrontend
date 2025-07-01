@@ -19,7 +19,7 @@ import colors from "../common/colors";
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [activeBar, setActivebar] = useState("Home");
+  const [activeBar, setActivebar] = useState("Find houses");
   const [mode, setMode] = useState("light");
 
   const theme = useMemo(
@@ -78,63 +78,63 @@ function Navbar() {
             <Box sx={{ display: { xs: "none", md: "flex" }, gap: 4 }}>
               <Link to="/" style={{ textDecoration: "none" }}>
                 <Button
-                  color={activeBar === "Home" ? "primary" : "inherit"}
-                  onClick={() => setActivebar("Home")}
+                 
+                  onClick={() => setActivebar("Find houses")}
                   sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                  style={{ color: colors.light }}
+                  style={{color: activeBar == 'Find houses' ? colors.secondary : colors.light }}
                 >
                   Find houses
                 </Button>
               </Link>
               <Link to="/post" style={{ textDecoration: "none" }}>
                 <Button
-                  color={activeBar === "Post" ? "primary" : "inherit"}
-                  onClick={() => setActivebar("Post")}
+                  
+                  onClick={() => setActivebar("Become a seller")}
                   sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                  style={{ color: colors.light }}
+                  style={{ color: activeBar == 'Become a seller' ? colors.secondary : colors.light }}
                 >
                   Become a seller
                 </Button>
               </Link>
-              <Link to="/profile" style={{ textDecoration: "none" }}>
+              <Link to="/myposts" style={{ textDecoration: "none" }}>
                 <Button
-                  color={activeBar === "Profile" ? "primary" : "inherit"}
-                  onClick={() => setActivebar("Profile")}
+                  color={activeBar === "My posts" ? "primary" : "inherit"}
+                  onClick={() => setActivebar("My posts")}
                   sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                  style={{ color: colors.light }}
+                  style={{ color: activeBar == 'My posts' ? colors.secondary : colors.light }}
                 >
                   My posts
                 </Button>
               </Link>
               <Link to="/chat" style={{ textDecoration: "none" }}>
                 <Button
-                  color={activeBar === "Chat" ? "primary" : "inherit"}
-                  onClick={() => setActivebar("Chat")}
+                  
+                  onClick={() => setActivebar("Messages")}
                   sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                  style={{ color: colors.light }}
+                  style={{ color: activeBar == 'Messages' ? colors.secondary : colors.light }}
                 >
                   Messages
                 </Button>
               </Link>
             </Box>
           </Box>
-          <Box sx={{ display:'flex', alignItems:'center',gap:2}}>
-            <Link to="/post" style={{ textDecoration: "none" }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Link to="/realestate" style={{ textDecoration: "none" }}>
               <Button
-                color={activeBar === "Post" ? "primary" : "inherit"}
-                onClick={() => setActivebar("Post")}
+                
+                onClick={() => setActivebar("Real estate")}
                 sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                style={{ color: colors.light }}
+                style={{ color: activeBar == 'Real estate' ? colors.secondary : colors.light }}
               >
-                Real state
+                Real estate
               </Button>
             </Link>
-            <Link to="/profile" style={{ textDecoration: "none" }}>
+            <Link to="/announcement" style={{ textDecoration: "none" }}>
               <Button
-                color={activeBar === "Profile" ? "primary" : "inherit"}
-                onClick={() => setActivebar("Profile")}
+
+                onClick={() => setActivebar("Announcements")}
                 sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                style={{ color: colors.light }}
+                style={{ color: activeBar == 'Announcements' ? colors.secondary : colors.light }}
               >
                 Announcements
               </Button>
