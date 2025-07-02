@@ -80,21 +80,24 @@ function RealEstate() {
                                 background: colors.primary,
                                 color: colors.white,
                                 fontWeight: 600,
-                                fontSize: 18,
-                                px: 4,
-                                py: 1.5,
+                                fontSize: { xs: 14, sm: 16, md: 18 },
+                                px: { xs: 2, sm: 3, md: 4 },
+                                py: { xs: 1, sm: 1.2, md: 1.5 },
                                 borderRadius: 3,
                                 textTransform: "none",
                                 boxShadow: 2,
-                                whiteSpace: "nowrap",
+
                                 '&:hover': {
                                     background: colors.secondary,
                                     color: colors.dark,
                                 },
+                                maxWidth: { xs: "100%", sm: 220 },
+                                minWidth: 0,
+                                wordBreak: "break-word",
                             }}
                             onClick={handleBrowseClick}
                         >
-                            Browse Real Estates
+                            Browse
                         </Button>
                     </Box>
                     <Box sx={{

@@ -41,10 +41,11 @@ function Announcement() {
             <Box
                 sx={{
                     mt: "80px",
+                    width: '100vw',
                     minHeight: "100vh",
                     background: colors.background,
-                    px: { xs: 2, md: 6 },
-                    py: 6,
+                    px: { xs: 1, sm: 2, md: 6 },
+                    py: { xs: 3, md: 6 },
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -55,9 +56,11 @@ function Announcement() {
                     sx={{
                         fontWeight: 900,
                         color: colors.primary,
-                        mb: 2,
+                        mb: { xs: 1, md: 2 },
                         letterSpacing: 1,
                         textAlign: "center",
+                        fontSize: { xs: "2rem", md: "2.5rem" },
+                        lineHeight: 1.1,
                     }}
                 >
                     What's New This Week?
@@ -65,78 +68,85 @@ function Announcement() {
                 <Typography
                     sx={{
                         color: colors.dark,
-                        fontSize: 18,
-                        mb: 5,
+                        fontSize: { xs: 15, md: 18 },
+                        mb: { xs: 3, md: 5 },
                         textAlign: "center",
                         maxWidth: 600,
                     }}
                 >
                     Stay up to date with the latest deals, events, and featured projects in the real estate world!
                 </Typography>
-                <Box
+                <Grid
+                    container
+                    spacing={{ xs: 2, sm: 3, md: 4 }}
+                    justifyContent="center"
                     sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: 4,
-                        alignItems:'stretch',
                         width: "100%",
-                        flexWrap:'wrap',
+                        maxWidth: 1200,
                         pb: 2,
-                        justifyContent: { xs: "flex-start", md: "center" },
                     }}
                 >
                     {announcements.map((item, idx) => (
-                        <Card
-                            key={idx}
-                            sx={{
-                                minWidth: 320,
-                                maxWidth: 340,
-                                borderRadius: 4,
-                                boxShadow: 4,
-                                background: colors.white,
-                                transition: "transform 0.2s",
-                                "&:hover": { transform: "translateY(-8px)", boxShadow: 8 },
-                                height: "100%",
-                                display: "flex",
-                                flexDirection: "column",
-                                flexShrink: 0,
-                            }}
-                        >
-                            <CardMedia
-                                component="img"
-                                image={item.image}
-                                alt={item.title}
+                        <Grid item xs={12} sm={6} md={4} key={idx} sx={{ display: "flex" }}>
+                            <Card
                                 sx={{
-                                    height: "300px",
-                                    borderTopLeftRadius: 16,
-                                    borderTopRightRadius: 16,
-                                    objectFit: "cover",
+                                    width: "100%",
+                                    borderRadius: 4,
+                                    boxShadow: 4,
+                                    background: colors.white,
+                                    transition: "transform 0.2s, box-shadow 0.2s",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    flexGrow: 1,
+                                    "&:hover": { transform: "translateY(-6px) scale(1.03)", boxShadow: 8 },
                                 }}
-                            />
-                            <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-                                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-                                    <Chip
-                                        label={item.chip}
-                                        sx={{
-                                            background: item.chipColor,
-                                            color: item.chipColor === colors.success ? colors.white : colors.dark,
-                                            fontWeight: 600,
-                                            mr: 1,
-                                            fontSize: 14,
-                                        }}
-                                    />
-                                    <Typography sx={{ color: colors.muted, fontSize: 13 }}>{item.date}</Typography>
-                                </Box>
-                                <Typography variant="h6" sx={{ fontWeight: 700, color: colors.primary, mb: 1 }}>
-                                    {item.title}
-                                </Typography>
-                                <Typography sx={{ color: colors.dark, fontSize: 15, mb: 2 }}>
-                                    {item.description}
-                                </Typography>
-                            </CardContent>
-                        </Card>
+                            >
+                                <CardMedia
+                                    component="img"
+                                    image={item.image}
+                                    alt={item.title}
+                                    sx={{
+                                        height: { xs: 160, sm: 200 },
+                                        borderTopLeftRadius: 16,
+                                        borderTopRightRadius: 16,
+                                        objectFit: "cover",
+                                    }}
+                                />
+                                <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column", p: { xs: 2, sm: 3 } }}>
+                                    <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                                        <Chip
+                                            label={item.chip}
+                                            sx={{
+                                                background: item.chipColor,
+                                                color: item.chipColor === colors.success ? colors.white : colors.dark,
+                                                fontWeight: 600,
+                                                mr: 1,
+                                                fontSize: 14,
+                                            }}
+                                        />
+                                        <Typography sx={{ color: colors.muted, fontSize: 13 }}>{item.date}</Typography>
+                                    </Box>
+                                    <Typography variant="h6" sx={{
+                                        fontWeight: 700,
+                                        color: colors.primary,
+                                        mb: 1,
+                                        fontSize: { xs: 16, sm: 18 }
+                                    }}>
+                                        {item.title}
+                                    </Typography>
+                                    <Typography sx={{
+                                        color: colors.dark,
+                                        fontSize: { xs: 14, sm: 15 },
+                                        mb: 2,
+                                        flexGrow: 1
+                                    }}>
+                                        {item.description}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
                     ))}
-                </Box>
+                </Grid>
             </Box>
         </ThemeProvider>
     );

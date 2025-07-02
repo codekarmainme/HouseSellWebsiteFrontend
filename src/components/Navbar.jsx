@@ -16,11 +16,15 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Link } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import colors from "../common/colors";
+import NotificationPopover from "./notification_dialogue";
+import ProfilePopOver from "./ProfilePopOver";
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [activeBar, setActivebar] = useState("Find houses");
   const [mode, setMode] = useState("light");
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const theme = useMemo(
     () =>
@@ -45,9 +49,19 @@ function Navbar() {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const navItems = [
+    { label: "Find houses", path: "/" },
+    { label: "Become a seller", path: "/post" },
+    { label: "My posts", path: "/myposts" },
+    { label: "Messages", path: "/chat" },
+    { label: "Real estate", path: "/realestate" },
+    { label: "Announcements", path: "/announcement" },
+  ];
 
   return (
     <ThemeProvider theme={theme}>
@@ -60,184 +74,176 @@ function Navbar() {
           fontFamily: "Poppins, Arial, sans-serif",
         }}
       >
-        <Toolbar>
-          <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-            <Typography
-              variant="h6"
-              sx={{
-                fontFamily: "Poppins, Arial, sans-serif",
-                fontWeight: 600,
-                letterSpacing: 1,
-                mr: 4,
-                color: colors.light,
-                cursor: 'pointer'
-              }}
-            >
-              HouseSell
-            </Typography>
-            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 4 }}>
-              <Link to="/" style={{ textDecoration: "none" }}>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          {/* Left side - Logo and main nav items */}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Link to='/' style={{textDecoration:'none'}}>
+              <Typography
+                variant="h6"
+                component={Link}
+                to="/"
+                sx={{
+                  fontFamily: "Poppins, Arial, sans-serif",
+                  fontWeight: 600,
+                  letterSpacing: 1,
+                  mr: { xs: 2, md: 4 },
+                  color: colors.light,
+                  textDecoration: "none",
+                }}
+              >
+                HouseSell
+              </Typography></Link>
+
+
+            {/* Desktop Navigation */}
+            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
+              {navItems.slice(0, 4).map((item) => (
                 <Button
-                 
-                  onClick={() => setActivebar("Find houses")}
-                  sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                  style={{color: activeBar == 'Find houses' ? colors.secondary : colors.light }}
+                  key={item.label}
+                  component={Link}
+                  to={item.path}
+                  onClick={() => setActivebar(item.label)}
+                  sx={{
+                    fontFamily: "Poppins, Arial, sans-serif",
+                    textTransform: "none",
+                    color: activeBar === item.label ? colors.secondary : colors.light,
+                    "&:hover": {
+                      color: colors.secondary,
+                    },
+                  }}
                 >
-                  Find houses
+                  {item.label}
                 </Button>
-              </Link>
-              <Link to="/post" style={{ textDecoration: "none" }}>
-                <Button
-                  
-                  onClick={() => setActivebar("Become a seller")}
-                  sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                  style={{ color: activeBar == 'Become a seller' ? colors.secondary : colors.light }}
-                >
-                  Become a seller
-                </Button>
-              </Link>
-              <Link to="/myposts" style={{ textDecoration: "none" }}>
-                <Button
-                  color={activeBar === "My posts" ? "primary" : "inherit"}
-                  onClick={() => setActivebar("My posts")}
-                  sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                  style={{ color: activeBar == 'My posts' ? colors.secondary : colors.light }}
-                >
-                  My posts
-                </Button>
-              </Link>
-              <Link to="/chat" style={{ textDecoration: "none" }}>
-                <Button
-                  
-                  onClick={() => setActivebar("Messages")}
-                  sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                  style={{ color: activeBar == 'Messages' ? colors.secondary : colors.light }}
-                >
-                  Messages
-                </Button>
-              </Link>
+              ))}
             </Box>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Link to="/realestate" style={{ textDecoration: "none" }}>
-              <Button
-                
-                onClick={() => setActivebar("Real estate")}
-                sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                style={{ color: activeBar == 'Real estate' ? colors.secondary : colors.light }}
-              >
-                Real estate
-              </Button>
-            </Link>
-            <Link to="/announcement" style={{ textDecoration: "none" }}>
-              <Button
 
-                onClick={() => setActivebar("Announcements")}
-                sx={{ fontFamily: "Poppins, Arial, sans-serif", textTransform: "none", whiteSpace: "nowrap" }}
-                style={{ color: activeBar == 'Announcements' ? colors.secondary : colors.light }}
-              >
-                Announcements
-              </Button>
-            </Link>
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconButton color="inherit">
-              <Badge badgeContent={6} color="error">
-                <NotificationsIcon style={{ color: colors.light }} />
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit">
-              <AccountCircle style={{ color: colors.light }} />
-            </IconButton>
-            <IconButton
+          {/* Right side - Additional nav items and icons */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {/* Desktop - Additional items */}
+            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
+              {navItems.slice(4).map((item) => (
+                <Button
+                  key={item.label}
+                  component={Link}
+                  to={item.path}
+                  onClick={() => setActivebar(item.label)}
+                  sx={{
+                    fontFamily: "Poppins, Arial, sans-serif",
+                    textTransform: "none",
+                    color: activeBar === item.label ? colors.secondary : colors.light,
+                    "&:hover": {
+                      color: colors.secondary,
+                    },
+                  }}
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </Box>
 
-              onClick={() => setMode(mode === "light" ? "dark" : "light")}
-              color="inherit"
-              aria-label="toggle dark mode"
-            >
-              {mode === "light" ? <Brightness4Icon style={{ color: colors.light }} /> : <Brightness7Icon style={{ color: colors.light }} />}
-            </IconButton>
-            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            {/* Icons */}
+            <Box sx={{ display: "flex", alignItems: "center", ml: 1 }}>
+              <IconButton
+                color="inherit"
+                onClick={() => setNotificationOpen(true)}
+                sx={{
+                  color: colors.light, height: '40px',
+                  width: '40px'
+                }}
+              >
+                <Badge badgeContent={6} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+
+              <NotificationPopover
+                open={notificationOpen}
+                onClose={() => setNotificationOpen(false)}
+              />
+
+              <IconButton
+                color="inherit"
+                onClick={() => setProfileOpen(true)}
+                sx={{
+                  color: colors.light, height: '40px',
+                  width: '40px'
+                }}
+              >
+                <AccountCircle />
+              </IconButton>
+
+              <ProfilePopOver
+                open={profileOpen}
+                onClose={() => setProfileOpen(false)}
+              />
+
+              <IconButton
+                onClick={() => setMode(mode === "light" ? "dark" : "light")}
+                color="inherit"
+                aria-label="toggle dark mode"
+                sx={{
+                  color: colors.light, height: '40px',
+                  width: '40px'
+                }}
+              >
+                {mode === "light" ? <Brightness4Icon /> : <Brightness7Icon />}
+              </IconButton>
+
+              {/* Mobile menu button */}
               <IconButton
                 color="inherit"
                 onClick={handleMenu}
                 size="large"
                 edge="end"
+                sx={{
+                  display: { xs: "flex", md: "none" },
+                  color: colors.light,
+                  ml: 1,
+                  height: '40px',
+                  width: '40px'
+                }}
               >
                 <MenuIcon />
               </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-              >
-                <MenuItem
-                  onClick={() => {
-                    setActivebar("Home");
-                    handleClose();
-                  }}
-                  sx={{ fontFamily: "Poppins, Arial, sans-serif" }}
-                >
-                  <Link
-                    to="/"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    Home
-                  </Link>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setActivebar("Post");
-                    handleClose();
-                  }}
-                  sx={{ fontFamily: "Poppins, Arial, sans-serif" }}
-                >
-                  <Link
-                    to="/post"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    Post
-                  </Link>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setActivebar("Profile");
-                    handleClose();
-                  }}
-                  sx={{ fontFamily: "Poppins, Arial, sans-serif" }}
-                >
-                  <Link
-                    to="/profile"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    My posts
-                  </Link>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    setActivebar("Chat");
-                    handleClose();
-                  }}
-                  sx={{ fontFamily: "Poppins, Arial, sans-serif" }}
-                >
-                  <Link
-                    to="/chat"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    Messages
-                  </Link>
-                </MenuItem>
-              </Menu>
             </Box>
           </Box>
+
+          {/* Mobile Menu */}
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            sx={{
+              display: { xs: "block", md: "none" },
+            }}
+          >
+            {navItems.map((item) => (
+              <MenuItem
+                key={item.label}
+                onClick={() => {
+                  setActivebar(item.label);
+                  handleClose();
+                }}
+                sx={{ fontFamily: "Poppins, Arial, sans-serif" }}
+              >
+                <Link
+                  to={item.path}
+                  style={{ textDecoration: "none", color: "inherit", width: "100%" }}
+                >
+                  {item.label}
+                </Link>
+              </MenuItem>
+            ))}
+          </Menu>
         </Toolbar>
       </AppBar>
     </ThemeProvider>

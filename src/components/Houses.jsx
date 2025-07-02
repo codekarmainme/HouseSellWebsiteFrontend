@@ -34,7 +34,7 @@ function Houses() {
     <>
       <Box sx={{ flex: 1, mt: '64px', p: 3 }}>
         <TextField
-          style={{ width: '50%',position:'sticky' }}
+          style={{ width: '50vh',position:'sticky' }}
           variant="outlined"
           placeholder="Search by type, address, or description"
           value={search}

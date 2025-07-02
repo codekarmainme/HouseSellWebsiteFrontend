@@ -8,7 +8,7 @@ const poppinsTheme = createTheme({
   },
 });
 
-function Chatfeed({ user, onSendMessage }) {
+function Chatfeed({ user, onSendMessage, onBack }) {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
 
@@ -40,6 +40,19 @@ function Chatfeed({ user, onSendMessage }) {
           background: colors.light,
         }}
       >
+        {onBack && (
+          <Button
+            onClick={onBack}
+            sx={{
+              mb: 2,
+              color: colors.primary,
+              fontFamily: "Poppins, Arial, sans-serif",
+              display: { xs: "inline-flex", md: "none" }
+            }}
+          >
+            &larr; Back
+          </Button>
+        )}
         <Box sx={{ flex: 1, overflowY: "auto", p: 3 }}>
           {user.messages.map((m, i) => (
             <Box

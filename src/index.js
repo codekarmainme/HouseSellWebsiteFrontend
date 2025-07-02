@@ -5,17 +5,31 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/Login_context';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import colors from "./common/colors"; // adjust path as needed
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const theme = createTheme({
+  palette: {
+    primary: { main: colors.primary },
+    background: { default: colors.background },
+  },
+  typography: {
+    fontFamily: "Poppins, Arial, sans-serif",
+  },
+});
 root.render(
-  <AuthProvider>
-     <BrowserRouter>
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-  </BrowserRouter>
-  </AuthProvider>
- 
+  <ThemeProvider theme={theme}>
+    <AuthProvider>
+      <BrowserRouter>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </BrowserRouter>
+    </AuthProvider>
+  </ThemeProvider>
+
+
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import MessageSidebar from '../components/MessageSidebar';
 import Chatfeed from '../components/Chatfeed';
 import MessagesRightSideBar from '../components/MessagesRightSideBar';
@@ -48,6 +48,14 @@ function Chat() {
 
   const selectedUser = users.find(u => u.id === selectedUserId);
 
+  // Responsive: detect if mobile
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
+
+  // On mobile, show only sidebar or chatfeed depending on selection
+  const showSidebar = isMobile && !selectedUserId;
+  const showChatfeed = isMobile && selectedUserId;
+  const showRightBar = !isMobile;
+
   // Handle sending a message
   const handleSendMessage = (text) => {
     if (!selectedUserId || !text.trim()) return;
@@ -65,39 +73,69 @@ function Chat() {
     );
   };
 
+  // On mobile, allow going back to sidebar
+  const handleBackToSidebar = () => setSelectedUserId(null);
+
   return (
     <Box
       sx={{
         display: 'flex',
         width: '100vw',
-        // height: 'calc(100vh - 80px)',
         mt: "80px",
         background: colors.background,
         fontFamily: 'Poppins, Arial, sans-serif',
-        overflow: "hidden"
+        overflow: "hidden",
+        height: { xs: 'calc(100vh - 80px)', md: 'auto' }
       }}
     >
-      {/* Left: Sidebar */}
-      <Box sx={{ flex: "1 0 320px", minWidth: 300, maxWidth: 350, height: "100%" }}>
-        <MessageSidebar
-          users={users}
-          selectedUserId={selectedUserId}
-          onSelectUser={setSelectedUserId}
-        />
-      </Box>
+      {/* Sidebar: show on desktop or on mobile if no user selected */}
+      {(!isMobile || showSidebar) && (
+        <Box
+          sx={{
+            flex: "1 0 320px",
+            minWidth: 0,
+            maxWidth: 350,
+            height: "100%",
+            display: { xs: showSidebar ? "block" : "none", md: "block" }
+          }}
+        >
+          <MessageSidebar
+            users={users}
+            selectedUserId={selectedUserId}
+            onSelectUser={setSelectedUserId}
+          />
+        </Box>
+      )}
 
-      {/* Center: Chat Feed */}
-      <Box sx={{ flex: "2 1 0%", minWidth: 0, height: "100%", borderLeft: `1px solid ${colors.background}`, borderRight: `1px solid ${colors.background}` }}>
-        <Chatfeed
-          user={selectedUser}
-          onSendMessage={handleSendMessage}
-        />
-      </Box>
+      {/* Chat Feed: show on desktop or on mobile if user selected */}
+      {(!isMobile || showChatfeed) && (
+        <Box
+          sx={{
+            flex: "2 1 0%",
+            minWidth: 0,
+            height: "100%",
+            borderLeft: { xs: "none", md: `1px solid ${colors.background}` },
+            borderRight: { xs: "none", md: `1px solid ${colors.background}` },
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+          }}
+        >
+          <Chatfeed
+            user={selectedUser}
+            onSendMessage={handleSendMessage}
+            // Pass a back button handler for mobile
+            onBack={isMobile ? handleBackToSidebar : undefined}
+          />
+        </Box>
+      )}
 
-      {/* Right: User Info */}
-      <Box sx={{ flex: "1 0 320px", minWidth: 300, maxWidth: 350, height: "100%" }}>
-        <MessagesRightSideBar user={selectedUser} />
-      </Box>
+      {/* Right: User Info (hide on mobile) */}
+      {showRightBar && (
+        <Box sx={{ flex: "1 0 320px", minWidth: 300, maxWidth: 350, height: "100%" }}>
+          <MessagesRightSideBar user={selectedUser} />
+        </Box>
+      )}
     </Box>
   );
 }

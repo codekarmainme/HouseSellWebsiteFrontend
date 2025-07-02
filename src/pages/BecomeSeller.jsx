@@ -97,22 +97,22 @@ function BecomeSeller() {
                 justifyContent: "center",
                 minHeight: "100vh",
                 background: colors.background,
+                px: { xs: 1, sm: 2, md: 0 }, // Responsive horizontal padding
             }}
         >
             <Box
                 sx={{
-
-                    width: '50%',
+                    width: { xs: '100%', sm: '90%', md: '60%', lg: '50%' }, // Responsive width
                     mx: "auto",
-                    mt: 8,
-                    p: 4,
+                    mt: { xs: 2, md: 8 },
+                    p: { xs: 2, sm: 3, md: 4 }, // Responsive padding
                     background: colors.white,
                     borderRadius: 3,
                     boxShadow: 3,
                     fontFamily: "Poppins, Arial, sans-serif",
                 }}
             >
-                <Typography variant="h5" sx={{ mb: 3, fontFamily: "Poppins, Arial, sans-serif", color: colors.primary }}>
+                <Typography variant="h5" sx={{ mb: 3, fontFamily: "Poppins, Arial, sans-serif", color: colors.primary, textAlign: "center" }}>
                     Become a Seller
                 </Typography>
                 <LinearProgress
@@ -126,7 +126,7 @@ function BecomeSeller() {
                         "& .MuiLinearProgress-bar": { backgroundColor: colors.primary }
                     }}
                 />
-                <Typography sx={{ mb: 2, fontFamily: "Poppins, Arial, sans-serif", color: colors.dark }}>
+                <Typography sx={{ mb: 2, fontFamily: "Poppins, Arial, sans-serif", color: colors.dark, textAlign: "center" }}>
                     {currentQuestion.label}
                 </Typography>
                 {["text", "email", "tel"].includes(currentQuestion.type) && (
@@ -218,7 +218,7 @@ function BecomeSeller() {
                         ))}
                     </RadioGroup>
                 )}
-                <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+                <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, justifyContent: "space-between", mt: 2, gap: 2 }}>
                     <Button
                         variant="outlined"
                         onClick={handleBack}
@@ -229,6 +229,7 @@ function BecomeSeller() {
                             borderColor: colors.primary,
                             "&:hover": { borderColor: colors.secondary, color: colors.secondary }
                         }}
+                        fullWidth={true}
                     >
                         Back
                     </Button>
@@ -243,11 +244,12 @@ function BecomeSeller() {
                             textTransform: "none",
                             "&:hover": { background: colors.secondary },
                         }}
+                        fullWidth={true}
                     >
                         {step === totalSteps - 1 ? "Finish" : "Next"}
                     </Button>
                 </Box>
-                <Typography sx={{ mt: 3, color: colors.primary, fontFamily: "Poppins, Arial, sans-serif" }}>
+                <Typography sx={{ mt: 3, color: colors.primary, fontFamily: "Poppins, Arial, sans-serif", textAlign: "center" }}>
                     Step {step + 1} of {totalSteps}
                 </Typography>
             </Box>

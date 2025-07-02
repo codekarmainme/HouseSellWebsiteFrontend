@@ -22,11 +22,15 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 480,
+  width: { xs: '95vw', sm: 400, md: 480 }, // Responsive width
+  maxWidth: 480,
   bgcolor: colors.white,
   borderRadius: 3,
   boxShadow: 24,
-  p: 4,
+  p: { xs: 2, sm: 4 }, // Responsive padding
+  maxHeight: { xs: '90vh', sm: '90vh' }, // Add this
+  overflowY: 'auto', // Add this
+
 };
 
 const poppinsTheme = createTheme({
@@ -50,8 +54,8 @@ const PostModal = ({
           <IconButton
             onClick={onClose}
             sx={{
-              width:40,
-              height:40,
+              width: 40,
+              height: 40,
               position: "absolute",
               top: 12,
               right: 12,

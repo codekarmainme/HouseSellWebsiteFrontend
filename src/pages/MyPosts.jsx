@@ -1,4 +1,6 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import CommentIcon from "@mui/icons-material/Comment";
+import BookMarkIcon from "@mui/icons-material/Bookmark";
 import colors from '../common/colors';
 import { Box, Typography } from "@mui/material";
 import { LineChart, BarChart } from '@mui/x-charts';
@@ -9,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import PostModal from "../components/post_modal";
 import React, { useState } from "react";
 import SuccessModal from "../components/SuccessModal";
+
 // Reusable stat box component
 function StatBox({ icon, value, label, bgColor, textColor }) {
   return (
@@ -23,7 +26,8 @@ function StatBox({ icon, value, label, bgColor, textColor }) {
         px: 3,
         py: 2,
         width: 180,
-        ml: 3,
+        ml: { xs: 0, sm: 3 },
+        mt: { xs: 2, sm: 0 },
       }}
     >
       {icon}
@@ -101,52 +105,56 @@ function MyPosts() {
     },
     {
       value: 45,
-      label: "Likes",
+      label: "Comments",
       bgColor: colors.secondary,
       textColor: colors.dark,
-      icon: <FavoriteIcon sx={{ color: colors.dark, fontSize: 32 }} />,
+      icon: <CommentIcon sx={{ color: colors.dark, fontSize: 32 }} />,
     },
     {
       value: 67,
-      label: "Likes",
+      label: "Saved",
       bgColor: colors.dark,
       textColor: colors.light,
-      icon: <FavoriteIcon sx={{ color: colors.light, fontSize: 32 }} />,
+      icon: <BookMarkIcon sx={{ color: colors.light, fontSize: 32 }} />,
     },
   ];
 
   return (
     <ThemeProvider theme={theme}>
       <Box
-        height='100vh'
-        width='100%'
         sx={{
+          minHeight: '100vh',
+          width: '100%',
           display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
           mt: "80px",
-        }}      >
-        <Box>
+        }}
+      >
+        {/* Left Section */}
+        <Box sx={{ width: { xs: '100%', md: '50%' }, px: { xs: 1, md: 0 } }}>
           <Typography
             color={colors.primary}
             sx={{
-              p: 2
+              p: 2,
+              fontSize: { xs: 20, md: 24 },
+              textAlign: { xs: "center", md: "left" }
             }}
-
           >
             Posts summary
           </Typography>
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: { xs: "stretch", sm: "center" },
+              justifyContent: { xs: "center", sm: "center" },
               gap: 1.5,
               background: colors.background,
               borderRadius: 2,
               boxShadow: 2,
               px: 3,
               py: 2,
-
-              ml: 3,
+              ml: { xs: 0, sm: 3 },
             }}
           >
             {stats.map((stat, idx) => (
@@ -160,11 +168,27 @@ function MyPosts() {
               />
             ))}
           </Box>
-          <Box sx={{ mt: 5, display: "flex", gap: 4, justifyContent: "center" }}>
+          <Box
+            sx={{
+              mt: 5,
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              gap: 4,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {/* Line Chart Example */}
-            <Box sx={{ background: colors.white, p: 3, borderRadius: 2, boxShadow: 2 }}>
+            <Box sx={{
+              background: colors.white,
+              p: 3,
+              borderRadius: 2,
+              boxShadow: 2,
+              mb: { xs: 3, md: 0 },
+              width: { xs: "100%", md: 350 }
+            }}>
               <Typography sx={{ fontFamily: "Poppins, Arial, sans-serif", mb: 2 }}>
-                Likes Over Time
+                Post interaction
               </Typography>
               <LineChart
                 xAxis={[{ scaleType: 'point', data: days }]}
@@ -173,30 +197,51 @@ function MyPosts() {
                   { data: commentsData, label: 'Comments', color: colors.secondary, showMark: false, area: true },
                   { data: savedData, label: 'Saved', color: colors.dark, showMark: false, area: true }
                 ]}
-                width={350}
-                height={250}
-
+                width={320}
+                height={220}
               />
             </Box>
             {/* Bar Chart Example */}
-            <Box sx={{ background: colors.white, p: 3, borderRadius: 2, boxShadow: 2 }}>
+            <Box sx={{
+              background: colors.white,
+              p: 3,
+              borderRadius: 2,
+              boxShadow: 2,
+              width: { xs: "100%", md: 350 }
+            }}>
               <Typography sx={{ fontFamily: "Poppins, Arial, sans-serif", mb: 2 }}>
                 Post Engagement
               </Typography>
               <BarChart
                 xAxis={[{ scaleType: 'band', data: days }]}
                 series={[{ data: commentsData, label: 'impressions', color: colors.secondary }]}
-                width={350}
-                height={250}
+                width={320}
+                height={220}
               />
             </Box>
           </Box>
         </Box>
 
-        <Divider orientation="vertical" sx={{ color: colors.primary, width: '2px', pl: 1 }} />
+        {/* Divider for desktop only */}
+        <Divider
+          orientation="vertical"
+          flexItem
+          sx={{
+            display: { xs: "none", md: "block" },
+            color: colors.primary,
+            width: '2px',
+            pl: 1
+          }}
+        />
+
+        {/* Right Section */}
         <Box
           sx={{
-            width: '50%'
+            width: { xs: '100%', md: '50%' },
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mt: { xs: 4, md: 0 }
           }}>
           <Box
             sx={{
@@ -204,16 +249,14 @@ function MyPosts() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              p: 2
+              p: 2,
+              mb: 2
             }}
           >
             <Typography
-
               sx={{
-
-
                 color: colors.primary,
-
+                fontSize: { xs: 20, md: 24 }
               }}
             >
               Your Posts
@@ -242,20 +285,19 @@ function MyPosts() {
             </Button>
           </Box>
           <Box
-          sx={{
+            sx={{
               width: '90%',
-              height:'70vh',
+              height: { xs: 'auto', md: '70vh' },
               display: 'flex',
-              flexDirection:'column',
+              flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               p: 2
             }}
           >
-            
             <Button
               variant="contained"
-              startIcon={<AddIcon/>}
+              startIcon={<AddIcon />}
               sx={{
                 width: 140,
                 fontFamily: 'Poppins, Arial, sans-serif',
@@ -272,16 +314,14 @@ function MyPosts() {
                   color: colors.light,
                 },
               }}
-               onClick={() => setModalOpen(true)}
+              onClick={() => setModalOpen(true)}
             >
               Create Post
             </Button>
           </Box>
-
-
         </Box>
       </Box>
-    <PostModal
+      <PostModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onSubmit={handleModalSubmit}
