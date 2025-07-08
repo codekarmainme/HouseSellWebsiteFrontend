@@ -11,9 +11,13 @@ import AddIcon from '@mui/icons-material/Add';
 import PostModal from "../components/post_modal";
 import React, { useState } from "react";
 import SuccessModal from "../components/SuccessModal";
+import { useDispatch, useSelector } from 'react-redux';
+import { postHouse } from '../state/houses/HouseSlice'; // Import the async thunk
+import { toast } from 'react-toastify';
+import { useEffect } from "react";
 
-// Reusable stat box component
 function StatBox({ icon, value, label, bgColor, textColor }) {
+
   return (
     <Box
       sx={{
@@ -57,35 +61,115 @@ function StatBox({ icon, value, label, bgColor, textColor }) {
 }
 
 function MyPosts() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [successOpen, setSuccessOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { status, error } = useSelector((state) => state.houses); // Get status and error from Redux state
 
-  const [form, setForm] = useState({
-    type: "",
-    bedrooms: "",
-    description: "",
-    terms: "",
-    price: "",
-    city: "",
-    remark: "",
-    images: [],
+  const [modalOpen, setModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    uid: 'some_user_id', // Replace with actual user ID (e.g., from auth context or Redux)
+    type: '',
+    description: '',
+    price: '',
+    address: '', // This will hold the selected city
+    bedrooms: '',
+    bathrooms: '', // This field is in your backend but not in your frontend form
+    area_sqft: '', // This field is in your backend but not in your frontend form
+    terms: '', // Frontend field for terms and conditions
+    remark: '',
+    images: [], // To hold image URLs after upload (or File objects initially)
+    postdate: new Date().toISOString().split('T')[0], // YYYY-MM-DD
   });
-  const [uploading, setUploading] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState(false); // State for image upload status
+
+  // --- Image Upload Handler (Simulated/Placeholder) ---
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setUploadingImages(true);
+    // In a real application, you would send these files to an image upload service
+    // e.g., Cloudinary, AWS S3, or your own backend for file storage.
+    // This is a placeholder for demonstration:
+    try {
+      const uploadedUrls = files.map(file => `https://example.com/images/${file.name}`); // Replace with actual upload logic
+      // For actual upload, you'd use FormData and an Axios call to a file upload endpoint
+      // const uploadFormData = new FormData();
+      // files.forEach(file => uploadFormData.append('images', file));
+      // const uploadResponse = await axios.post('/api/upload-images', uploadFormData);
+      // const uploadedUrls = uploadResponse.data.urls; // Assuming your upload endpoint returns URLs
+
+      setFormData((prev) => ({
+        ...prev,
+        images: uploadedUrls, // Store the URLs
+      }));
+      toast.success('Images selected/uploaded successfully!');
+    } catch (error) {
+      console.error('Image upload error:', error);
+      toast.error('Failed to upload images.');
+    } finally {
+      setUploadingImages(false);
+    }
+  };
 
   const handleFormChange = (e) => {
     const { name, value, files } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: files ? Array.from(files) : value,
-    }));
+    if (name === 'images') {
+      // If it's the file input, call the image upload handler
+      handleImageUpload(e);
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
-  const handleModalSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // handle submit logic here
-    setModalOpen(false);
-    setSuccessOpen(true);
+
+    // Mapping frontend names to backend expected names
+    const dataToSend = {
+      uid: formData.uid,
+      type: formData.type,
+      description: formData.description,
+      price: parseFloat(formData.price), // Ensure price is a number
+      address: formData.address, // `address` in backend corresponds to `city` in frontend
+      bedrooms: parseInt(formData.bedrooms), // Ensure bedrooms is an integer
+      // bathrooms: formData.bathrooms, // Add if you include in form
+      // area_sqft: formData.area_sqft, // Add if you include in form
+      termandcondition: formData.terms, // `termandcondition` in backend corresponds to `terms` in frontend
+      images: formData.images,
+      postdate: formData.postdate,
+    };
+
+    // Dispatch the Redux thunk
+    dispatch(postHouse(dataToSend));
   };
+
+  // Listen for changes in the Redux `status` for feedback
+  useEffect(() => {
+    if (status === 'succeeded') {
+      toast.success('House posted successfully!');
+      setModalOpen(false); // Close modal on success
+      // Optionally reset form here:
+      setFormData({
+        uid: 'some_user_id',
+        type: '',
+        description: '',
+        price: '',
+        address: '',
+        bedrooms: '',
+        bathrooms: '',
+        area_sqft: '',
+        terms: '',
+        remark: '',
+        images: [],
+        postdate: new Date().toISOString().split('T')[0],
+      });
+    } else if (status === 'failed') {
+      toast.error(`Error posting house: ${error}`);
+    }
+  }, [status, error]);
   const theme = createTheme({
     typography: {
       fontFamily: 'Poppins, Arial, sans-serif',
@@ -324,12 +408,12 @@ function MyPosts() {
       <PostModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        onSubmit={handleModalSubmit}
-        form={form}
+        onSubmit={handleSubmit}
+        form={formData}
         onFormChange={handleFormChange}
-        uploading={uploading}
+        uploading={uploadingImages || status === 'loading'}
       />
-      <SuccessModal open={successOpen} onClose={() => setSuccessOpen(false)} />
+      {/* <SuccessModal open={successOpen} onClose={() => setSuccessOpen(false)} /> */}
     </ThemeProvider>
   );
 }

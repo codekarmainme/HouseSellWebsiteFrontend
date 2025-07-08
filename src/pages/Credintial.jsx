@@ -1,33 +1,77 @@
-import React, { useContext, useState } from "react";
 import { Box, Typography, TextField, Button, Paper, Avatar, IconButton, InputAdornment, useTheme, useMediaQuery } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import GoogleIcon from '@mui/icons-material/Google';
 import AppleIcon from '@mui/icons-material/Apple';
 import logo from "../assets/images/buy-house-removebg.png";
-import { Authcontext } from "../context/Login_context";
 import colors from "../common/colors";
-
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  setIsSignup, setUsername, setEmail, setPassword, setMsg, setShowPassword, setUser
+} from "../state/auth/AuthSlice";
+import axios from 'axios';
 function Credintial() {
-  const [isSignup, setIssignup] = useState(false);
-  const [msg, setmsg] = useState(null);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-  const { login } = useContext(Authcontext);
-
+  const dispatch = useDispatch();
+  const { isSignup, username, email, password, msg, showPassword, user } = useSelector(state => state.auth);
   function setsignup() {
-    setIssignup(!isSignup);
+    dispatch(setIsSignup(!isSignup));
   }
-  function handlemessage() {
-    setmsg("Successfully registered!✅");
-    setIssignup(false);
-    setTimeout(() => setmsg(null), 1000);
-  }
-  const handlesubmit = (e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
-    login(email, username, password);
+    console.log(username, email, password);
+    if (isSignup) {
+
+      try {
+        const res = await axios.post("http://localhost:5000/api/auth/signup", {
+          username,
+          email,
+          password
+        });
+        if (res.status === 201) {
+          dispatch(setMsg("Successfully registered!✅"));
+          dispatch(setIsSignup(false));
+          setTimeout(() => dispatch(setMsg(null)), 1500);
+        } else {
+          dispatch(setMsg(res.data.message || "Signup failed"));
+          setTimeout(() => dispatch(setMsg(null)), 2000);
+        }
+      } catch (err) {
+        // Show backend error if available
+        console.log(err);
+        dispatch(setMsg(
+          err.response?.data?.error ||
+          err.response?.data?.message ||
+          err.message ||
+          "Server error"
+        ));
+        setTimeout(() => dispatch(setMsg(null)), 2000);
+      }
+    } else {
+      // Sign in logic (call /login)
+      try {
+        const res = await axios.post("http://localhost:5000/api/auth/login", {
+          email: isSignup ? email : username,
+          password
+        });
+        if (res.status === 200) {
+          console.log(res.data)
+          setUser(res.data.user);
+          dispatch(setMsg("Login successful!"));
+          // You can store token/data here if needed
+          setTimeout(() => dispatch(setMsg(null)), 1500);
+        } else {
+          dispatch(setMsg(res.data.message || "Login failed"));
+          setTimeout(() => dispatch(setMsg(null)), 2000);
+        }
+      } catch (err) {
+        dispatch(setMsg(
+          err.response?.data?.error ||
+          err.response?.data?.message ||
+          err.message ||
+          "Server error"
+        ));
+        setTimeout(() => dispatch(setMsg(null)), 2000);
+      }
+    }
   };
 
   const theme = useTheme();
@@ -99,7 +143,7 @@ function Credintial() {
               color: colors.white,
               px: 2,
               py: 1,
-              borderRadius: 2,
+              borderRadius: 0,
               mb: 2,
               width: "100%",
               textAlign: "center",
@@ -112,7 +156,7 @@ function Credintial() {
         )}
         <Box
           component="form"
-          onSubmit={isSignup ? (e) => { e.preventDefault(); handlemessage(); } : handlesubmit}
+          onSubmit={handlesubmit}
           sx={{
             width: "100%",
             display: "flex",
@@ -126,7 +170,7 @@ function Credintial() {
               label="Email"
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={e => dispatch(setEmail(e.target.value))}
               fullWidth
               required
               variant="outlined"
@@ -137,7 +181,7 @@ function Credintial() {
           <TextField
             label={isSignup ? "Username" : "Username or Email"}
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={e => dispatch(setUsername(e.target.value))}
             fullWidth
             required
             variant="outlined"
@@ -148,7 +192,7 @@ function Credintial() {
             label="Password"
             type={showPassword ? "text" : "password"}
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={e => dispatch(setPassword(e.target.value))}
             fullWidth
             required
             variant="outlined"
@@ -159,7 +203,7 @@ function Credintial() {
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
-                    onClick={() => setShowPassword((show) => !show)}
+                    onClick={() => dispatch(setShowPassword(!showPassword))}
                     edge="end"
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}

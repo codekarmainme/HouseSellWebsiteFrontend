@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import Navbar from './Navbar'
-import { Authcontext } from '../context/Login_context'
+
 import Router from '../router/Router'
 import Credintial from '../pages/Credintial';
-
+import { useSelector }  from 'react-redux';
 function Layout() {
-  const { user } = useContext(Authcontext);
+const user=useSelector(state=>state.auth.user);
   return (
     user ? (
       <div>
@@ -14,7 +14,9 @@ function Layout() {
           <Router />
         </div>
       </div>
-    ) : <Credintial />
+    ) : 
+    
+    <Credintial />
   )
 }
 

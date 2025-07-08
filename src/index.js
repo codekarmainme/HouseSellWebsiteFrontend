@@ -4,10 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './context/Login_context';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import colors from "./common/colors"; // adjust path as needed
-
+import { Provider } from 'react-redux';
+import store from './state/Store';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const theme = createTheme({
   palette: {
@@ -19,15 +19,18 @@ const theme = createTheme({
   },
 });
 root.render(
-  <ThemeProvider theme={theme}>
-    <AuthProvider>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+
       <BrowserRouter>
         <React.StrictMode>
           <App />
         </React.StrictMode>
       </BrowserRouter>
-    </AuthProvider>
-  </ThemeProvider>
+
+    </ThemeProvider>
+  </Provider>
+
 
 
 );

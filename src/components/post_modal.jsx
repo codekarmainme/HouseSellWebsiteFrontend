@@ -38,14 +38,13 @@ const poppinsTheme = createTheme({
     fontFamily: "Poppins, Arial, sans-serif",
   },
 });
-
 const PostModal = ({
   open,
   onClose,
   onSubmit,
   form,
   onFormChange,
-  uploading,
+  uploading, 
 }) => {
   return (
     <ThemeProvider theme={poppinsTheme}>
@@ -100,6 +99,30 @@ const PostModal = ({
               InputLabelProps={{ style: { fontFamily: "Poppins, Arial, sans-serif" } }}
               InputProps={{ style: { fontFamily: "Poppins, Arial, sans-serif" } }}
             />
+            {/* Add Bathrooms field if needed */}
+            <TextField
+              label="Bathrooms"
+              name="bathrooms"
+              type="number"
+              value={form.bathrooms}
+              onChange={onFormChange}
+              fullWidth
+              required // or not, based on your schema
+              InputLabelProps={{ style: { fontFamily: "Poppins, Arial, sans-serif" } }}
+              InputProps={{ style: { fontFamily: "Poppins, Arial, sans-serif" } }}
+            />
+            {/* Add Area (Sqft) field if needed */}
+            <TextField
+              label="Area (sqft)"
+              name="area_sqft"
+              type="number"
+              value={form.area_sqft}
+              onChange={onFormChange}
+              fullWidth
+              required // or not, based on your schema
+              InputLabelProps={{ style: { fontFamily: "Poppins, Arial, sans-serif" } }}
+              InputProps={{ style: { fontFamily: "Poppins, Arial, sans-serif" } }}
+            />
             <TextField
               label="Description"
               name="description"
@@ -114,7 +137,7 @@ const PostModal = ({
             />
             <TextField
               label="Terms and Conditions"
-              name="terms"
+              name="terms" // Matches formData.terms
               value={form.terms}
               onChange={onFormChange}
               fullWidth
@@ -138,8 +161,8 @@ const PostModal = ({
             <TextField
               select
               label="City"
-              name="city"
-              value={form.city}
+              name="address" // Matches formData.address (which sends to backend 'address' column)
+              value={form.address}
               onChange={onFormChange}
               fullWidth
               required
