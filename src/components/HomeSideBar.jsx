@@ -16,11 +16,11 @@ import {
 } from "@mui/material";
 import colors from "../common/colors";
 
-const propertyTypes = ["Real state", "Apartment", "Condo", "Villa"];
-const locations = ["Addis Ababa", "Adama", "Bahir Dar", "Hawassa"];
+const propertyTypes = ["Real estate", "Apartment", "Condominuim", "Villa", "G+1", "G+2", "G+3"];
+const locations = ["Addis Ababa", "Adama", "Bahir Dar", "Hawassa", "Dire Dawa", "Mekelle", "Gondar", "Jimma", "Jijiga", "Shashamane"];
 
 function HomeSideBar({ open = true, onFilter }) {
-    const [price, setPrice] = useState([100000, 1000000]);
+    const [price, setPrice] = useState([100000, 10000000]);
     const [bedrooms, setBedrooms] = useState("");
     const [propertyType, setPropertyType] = useState([]);
     const [location, setLocation] = useState("");
@@ -47,14 +47,14 @@ function HomeSideBar({ open = true, onFilter }) {
                 flexDirection: 'column',
                 justifyContent: 'space-evenly',
                 width: 280,
-               height: "calc(100vh - 64px)",
+                height: "calc(100vh - 64px)",
                 background: colors.background,
                 padding: 2,
                 boxSizing: "border-box",
                 borderRight: `1px solid ${colors.grey}`,
                 position: "relative",
                 alignItems: 'space-evenly',
-                top: 64, 
+                top: 64,
             }}
         >
             <Typography variant="h6" sx={{ mb: 2, fontFamily: "Poppins, Arial, sans-serif" }}>
@@ -68,27 +68,27 @@ function HomeSideBar({ open = true, onFilter }) {
             </Typography>
             <Slider
                 value={price}
-                min={50000}
-                max={5000000}
+                min={500000}
+                max={50000000}
                 step={10000}
                 onChange={(_, val) => setPrice(val)}
                 valueLabelDisplay="auto"
                 sx={{ color: colors.primary, mb: 2 }}
             />
             <Box
-            display='flex'
-            justifyContent='space-between'
-            flexWrap='Wrap'
-            
+                display='flex'
+                justifyContent='space-between'
+                flexWrap='Wrap'
+
 
             >
-                <Typography gutterBottom sx={{fontFamily: "Poppins, Arial, sans-serif", fontSize: '0.9rem' }}>
+                <Typography gutterBottom sx={{ fontFamily: "Poppins, Arial, sans-serif", fontSize: '0.9rem' }}>
                     {
                         price[0].toLocaleString('en-US', { style: 'currency', currency: 'ETB' })
                     }
                 </Typography>
-                 <Typography gutterBottom sx={{ fontFamily: "Poppins, Arial, sans-serif", fontSize: '0.9rem' }}>
-                   -
+                <Typography gutterBottom sx={{ fontFamily: "Poppins, Arial, sans-serif", fontSize: '0.9rem' }}>
+                    -
                 </Typography>
                 <Typography gutterBottom sx={{ fontFamily: "Poppins, Arial, sans-serif", fontSize: '0.9rem' }}>
                     {

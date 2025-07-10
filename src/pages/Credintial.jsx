@@ -15,11 +15,13 @@ function Credintial() {
   function setsignup() {
     dispatch(setIsSignup(!isSignup));
   }
+
   const handlesubmit = async (e) => {
     e.preventDefault();
     console.log(username, email, password);
-    if (isSignup) {
 
+    if (isSignup) {
+      // ... (signup logic - no changes needed here for setUser)
       try {
         const res = await axios.post("http://localhost:5000/api/auth/signup", {
           username,
@@ -30,12 +32,14 @@ function Credintial() {
           dispatch(setMsg("Successfully registered!✅"));
           dispatch(setIsSignup(false));
           setTimeout(() => dispatch(setMsg(null)), 1500);
+          // After successful signup, if you want to automatically log them in,
+          // you would dispatch loginUser thunk here or directly set user.
+          // For now, it just redirects to sign-in form.
         } else {
           dispatch(setMsg(res.data.message || "Signup failed"));
           setTimeout(() => dispatch(setMsg(null)), 2000);
         }
       } catch (err) {
-        // Show backend error if available
         console.log(err);
         dispatch(setMsg(
           err.response?.data?.error ||
@@ -49,14 +53,20 @@ function Credintial() {
       // Sign in logic (call /login)
       try {
         const res = await axios.post("http://localhost:5000/api/auth/login", {
-          email: isSignup ? email : username,
+          email: username, // Assuming 'username' TextField is used for email/username input during login
           password
         });
         if (res.status === 200) {
-          console.log(res.data)
-          setUser(res.data.user);
+          console.log("Login successful response:", res.data);
+          // CORRECTED: Dispatch the action to update Redux state
+          dispatch(setUser(res.data.user)); // This is the crucial fix!
+          // If your backend also sends a token, store it here (e.g., localStorage.setItem('token', res.data.token);)
+
+          // You might also want to set username and email if you use them separately in state:
+          // dispatch(setUsername(res.data.user.username));
+          // dispatch(setEmail(res.data.user.email));
+
           dispatch(setMsg("Login successful!"));
-          // You can store token/data here if needed
           setTimeout(() => dispatch(setMsg(null)), 1500);
         } else {
           dispatch(setMsg(res.data.message || "Login failed"));

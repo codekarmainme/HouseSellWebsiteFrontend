@@ -3,18 +3,15 @@ import { Paper, Typography, IconButton, Box, Avatar, Button, Divider } from "@mu
 import CloseIcon from "@mui/icons-material/Close";
 import colors from "../common/colors";
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser, logout } from "../state/auth/AuthSlice";
 
-
-const user = {
-    name: "Mikiyas Solomon",
-    email: "mikiyas@example.com",
-    avatar: pp,
-};
 
 const ProfilePopOver = ({ open, onClose }) => {
     const ref = useRef();
+    const dispatch = useDispatch()
+    const { username, email, user } = useSelector(state => state.auth);
 
-    // Close when clicking outside
     useEffect(() => {
         function handleClick(event) {
             if (ref.current && !ref.current.contains(event.target)) {
@@ -28,6 +25,11 @@ const ProfilePopOver = ({ open, onClose }) => {
     }, [open, onClose]);
 
     if (!open) return null;
+    const handleLogout = () => {
+        dispatch(logout());
+        onClose(); 
+
+    };
 
     return (
         <Box
@@ -63,10 +65,10 @@ const ProfilePopOver = ({ open, onClose }) => {
                 <Box sx={{ p: 3, display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <Avatar src={user.avatar} sx={{ width: 70, height: 70, mb: 1, border: `3px solid ${colors.secondary}` }} />
                     <Typography sx={{ fontWeight: 700, fontSize: 18, color: colors.primary, mb: 0.5 }}>
-                        {user.name}
+                        {username}
                     </Typography>
                     <Typography sx={{ color: colors.muted, fontSize: 15, mb: 2 }}>
-                        {user.email}
+                        {email}
                     </Typography>
                     <Divider sx={{ width: "100%", my: 2, background: colors.background }} />
                     <Link to='/myposts' style={{ textDecoration: 'none', width: '100%' }}>
@@ -87,23 +89,23 @@ const ProfilePopOver = ({ open, onClose }) => {
                         >
                             Dashboard
                         </Button></Link>
-                    <Link to='/credintial' style={{ textDecoration: 'none', width: '100%' }}>
-                        <Button
-                            variant="outlined"
-                            fullWidth
-                            sx={{
-                                borderColor: colors.primary,
-                                color: colors.primary,
-                                fontWeight: 600,
-                                textTransform: "none",
-                                borderRadius: 2,
-                                fontFamily: "Poppins, Arial, sans-serif",
-                                '&:hover': { background: colors.accent, borderColor: colors.secondary },
-                            }}
-                            onClick={() => { /* handle logout here */ }}
-                        >
-                            Logout
-                        </Button></Link>
+
+                    <Button
+                        variant="outlined"
+                        fullWidth
+                        sx={{
+                            borderColor: colors.primary,
+                            color: colors.primary,
+                            fontWeight: 600,
+                            textTransform: "none",
+                            borderRadius: 2,
+                            fontFamily: "Poppins, Arial, sans-serif",
+                            '&:hover': { background: colors.accent, borderColor: colors.secondary },
+                        }}
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </Button>
 
                 </Box>
             </Paper>

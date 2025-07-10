@@ -7,7 +7,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import colors from "./common/colors"; // adjust path as needed
 import { Provider } from 'react-redux';
-import store from './state/Store';
+import { store, persistor } from './state/Store';
+import { PersistGate } from 'redux-persist/integration/react';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const theme = createTheme({
   palette: {
@@ -19,18 +20,21 @@ const theme = createTheme({
   },
 });
 root.render(
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
 
-      <BrowserRouter>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
-      </BrowserRouter>
+  <ThemeProvider theme={theme}>
 
-    </ThemeProvider>
-  </Provider>
+    <React.StrictMode>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          {/* Your Router needs to be inside Provider and PersistGate */}
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </PersistGate>
+      </Provider>
+    </React.StrictMode>
 
+  </ThemeProvider>
 
 
 );

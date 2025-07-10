@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   Modal,
   Box,
@@ -46,6 +47,7 @@ const PostModal = ({
   onFormChange,
   uploading, 
 }) => {
+
   return (
     <ThemeProvider theme={poppinsTheme}>
       <Modal open={open} onClose={onClose}>

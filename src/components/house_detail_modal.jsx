@@ -17,16 +17,18 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import StarIcon from "@mui/icons-material/Star";
 import colors from "../common/colors";
+import ContactSeller from "./ContactSeller";
+import { useState } from "react";
 
 const HouseDetailModal = ({
   open,
   onClose,
-  image,
+  images,
   type,
   price,
   description,
   bedrooms,
-  condition,
+  termandcondition,
   isloading,
   address,
   upvoted = false,
@@ -38,7 +40,16 @@ const HouseDetailModal = ({
   onSave,
   
 }) => {
+   const [contactModalOpen, setContactModalOpen] = useState(false);
+    const handleOpenContactModal = () => {
+    setContactModalOpen(true);
+  };
+
+  const handleCloseContactModal = () => {
+    setContactModalOpen(false);
+  };
   return (
+    <>
     <Drawer
       anchor="right"
       open={open}
@@ -66,7 +77,7 @@ const HouseDetailModal = ({
           <>
             <Box
               component="img"
-              src={image}
+              src={images}
               alt="House"
               sx={{
                 width: "100%",
@@ -96,7 +107,7 @@ const HouseDetailModal = ({
               variant="body2"
               sx={{ fontFamily: "Poppins, Arial, sans-serif", mb: 1 }}
             >
-              Condition: {condition}
+              Condition: {termandcondition}
             </Typography>
             <Typography
               variant="body2"
@@ -144,6 +155,7 @@ const HouseDetailModal = ({
                 "&:hover": { background: colors.secondary },
               }}
               fullWidth
+              onClick={handleOpenContactModal}
             >
               Contact Seller
             </Button>
@@ -151,6 +163,12 @@ const HouseDetailModal = ({
         )}
       </Box>
     </Drawer>
+     <ContactSeller
+        open={contactModalOpen}
+        onClose={handleCloseContactModal}
+    
+      />
+    </>
   );
 };
 
